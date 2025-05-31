@@ -435,8 +435,27 @@
         window.open("https://phantom.app/", "_blank");
       }
     });
-  </script>
 
-  
+    
+    
+  </script>
+<!-- Custom Chatbase Button Config -->
+<script>
+  window.chatbaseConfig = {
+    chatbotId: "MiJlvfcu3TySZK6iapGYU",  // Use your real bot ID
+    autoPopup: false,                    // Don't open on load
+    injectTo: "#hikari-chat-button",     // Attach to your custom button
+    hideDefaultLauncher: true            // This disables the floating default button
+  };
+</script>
+
+<script
+  src="https://www.chatbase.co/embed.min.js"
+  defer>
+</script>
+
+
+</button>
+
 </body>
 </html>
