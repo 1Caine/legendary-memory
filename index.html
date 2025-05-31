@@ -11,14 +11,28 @@
       margin: 0;
       padding: 0;
       font-family: 'Blinker', sans-serif;
-      background-image: url('./hikaripro.jpeg');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-attachment: fixed;
-      background-size: cover;
-      background-color: #060505f3;
       color: white;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./hikaripro.jpeg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  filter: blur(2px); /* ← Adjust blur strength */
+  z-index: -1;
+  pointer-events: none;
+}
+    
 
     body::after {
       content: "";
@@ -291,7 +305,7 @@
   </div>
 
   <script>
-    const CONTRACT_ADDRESS = "COMING SOON...";
+    const CONTRACT_ADDRESS = "PASTE_CA_HERE";
 
     function copyCA(event) {
       navigator.clipboard.writeText(CONTRACT_ADDRESS).then(() => {
@@ -422,5 +436,7 @@
       }
     });
   </script>
+
+  
 </body>
 </html>
