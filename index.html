@@ -279,6 +279,40 @@
       }
     }
 
+    .chatbot-ring {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 150, 0.3) 0%, rgba(0, 255, 150, 0.15) 70%, transparent 100%);
+  box-shadow:
+    0 0 8px rgba(0, 255, 150, 0.4),
+    0 0 16px rgba(0, 255, 150, 0.3),
+    0 0 24px rgba(0, 255, 150, 0.2);
+  animation: ringPulse 2s ease-in-out infinite;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px rgba(0, 255, 150, 0.4),
+      0 0 16px rgba(0, 255, 150, 0.3),
+      0 0 24px rgba(0, 255, 150, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 16px rgba(0, 255, 180, 0.6),
+      0 0 24px rgba(0, 255, 150, 0.5),
+      0 0 40px rgba(0, 255, 150, 0.3);
+  }
+}
+
+
   </style>
 </head>
 <body>
@@ -452,10 +486,31 @@
 <script
   src="https://www.chatbase.co/embed.min.js"
   defer>
+  
 </script>
 
 
 </button>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const interval = setInterval(() => {
+      const chatbotImg = document.querySelector('img[src*="chat-icons/04cac0bc"]');
+      
+      if (chatbotImg && !chatbotImg.parentElement.classList.contains('chatbot-ring')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chatbot-ring';
+        
+        const parent = chatbotImg.parentElement;
+        parent.insertBefore(wrapper, chatbotImg);
+        wrapper.appendChild(chatbotImg);
+
+        clearInterval(interval);
+      }
+    }, 500);
+  });
+</script>
+
 
 </body>
 </html>
