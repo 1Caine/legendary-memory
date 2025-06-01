@@ -7,7 +7,526 @@
   <meta property="og:site_name" content="www.hikariprotocol.com">
   <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    html, body {<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hikari Protocol</title>
+  <meta property="og:site_name" content="www.hikariprotocol.com">
+  <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@400;700&display=swap" rel="stylesheet">
+  <style>
     html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Blinker', sans-serif;
+      color: white;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('./hikaripro.jpeg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  filter: blur(2px); /* ← Adjust blur strength */
+  z-index: -1;
+  pointer-events: none;
+}
+    
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: url('https://www.transparenttextures.com/patterns/brushed-alum.png');
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    canvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #wallet-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    #connect-wallet {
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid silver;
+      color: silver;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    #connect-wallet:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px rgba(192, 192, 192, 0.7);
+    }
+
+    #globalParticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #logoParticles {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: 200px;
+      height: 200px;
+      z-index: 3;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2vh 2vw;
+      box-sizing: border-box;
+    }
+
+    .logo {
+      font-size: clamp(2rem, 8vw, 6rem);
+      font-weight: 200;
+      opacity: 0;
+      animation: fadeGlow 1.5s ease-out forwards, pulsarBurst 3s infinite ease-in-out;
+      background: linear-gradient(135deg, #dcdcdc, #a9a9a9, #f5f5f5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 0.05);
+      transform: translateY(20px);
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 300;
+      margin: 0.5rem 0;
+      animation: fadeUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+
+    p {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-weight: 400;
+      max-width: 600px;
+      margin: 1rem 0 2rem 0;
+      animation: fadeUp 1s ease-out forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      animation: fadeUp 1s ease-out forwards;
+      animation-delay: 0.6s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .button {
+      flex: 1 1 auto;
+      max-width: 180px;
+      padding: 12px 24px;
+      background: linear-gradient(145deg, #2f2f2f, #1a1a1a);
+      background-blend-mode: overlay;
+      color: white;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      border: 1px solid #aaa;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: none;
+      font-family: 'Blinker', sans-serif;
+    }
+
+    .button:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+      transform: scale(1.05);
+    }
+
+    .footer-text {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: #ccc;
+      font-size: 0.95rem;
+      z-index: 5;
+      pointer-events: none;
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeGlow {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulsarBurst {
+      0%, 100% {
+        text-shadow: 0 0 10px rgba(215, 221, 222, 0.7),
+                     0 0 20px rgba(96, 96, 97, 0.4),
+                     0 0 30px rgba(17, 17, 17, 0.2);
+        transform: scale(1) translateY(0);
+      }
+      50% {
+        text-shadow: 0 0 30px rgb(243, 249, 249),
+                     0 0 60px rgba(109, 108, 110, 0.8),
+                     0 0 90px rgba(16, 16, 16, 0.5);
+        transform: scale(1.08) translateY(-2px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button {
+        width: 90%;
+        max-width: 300px;
+      }
+
+      .footer-text {
+        font-size: 0.8rem;
+        bottom: 10px;
+      }
+
+      #wallet-container {
+        top: 10px;
+        right: 10px;
+      }
+    }
+
+    /* Mobile styles (default) — already handled in your current CSS */
+
+/* Desktop styles (only apply on wider screens) */
+@media (min-width: 768px) {
+      .logo {
+        font-size: 6rem;
+        margin-top: -13rem;
+        margin-bottom: 5rem;
+      }
+
+      h1 {
+        font-size: 6rem;
+        margin-top: 1rem;
+      }
+
+      p {
+        font-size: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .buttons {
+        flex-direction: row;
+        justify-content: center;
+        max-width: none;
+        margin-bottom: -2rem;
+      }
+
+      .button {
+        width: auto;
+        padding: 12px 24px;
+      }
+
+      .footer-text {
+        font-size: 1rem;
+      }
+    }
+
+    .chatbot-ring {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 150, 0.3) 0%, rgba(0, 255, 150, 0.15) 70%, transparent 100%);
+  box-shadow:
+    0 0 8px rgba(0, 255, 150, 0.4),
+    0 0 16px rgba(0, 255, 150, 0.3),
+    0 0 24px rgba(0, 255, 150, 0.2);
+  animation: ringPulse 2s ease-in-out infinite;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px rgba(0, 255, 150, 0.4),
+      0 0 16px rgba(0, 255, 150, 0.3),
+      0 0 24px rgba(0, 255, 150, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 16px rgba(0, 255, 180, 0.6),
+      0 0 24px rgba(0, 255, 150, 0.5),
+      0 0 40px rgba(0, 255, 150, 0.3);
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <div id="wallet-container">
+    <button id="connect-wallet">Connect Wallet</button>
+  </div>
+
+  <canvas id="globalParticles"></canvas>
+  <canvas id="spaceCanvas"></canvas>
+  <div class="content">
+    <canvas id="logoParticles"></canvas>
+    <div class="logo">光</div>
+    <h1>HIKARI PROTOCOL</h1>
+    <p>VISUAL AI ORCHESTRATION BUILT WITH FLOWISE</p>
+    <div class="buttons">
+      <a href="https://x.com/HikariProtocol" target="_blank" class="button">X Page</a>
+      <button class="button" onclick="copyCA(event)">Copy CA</button>
+      <a href="https://github.com/FlowiseAI/Flowise" target="_blank" class="button">GitHub Link</a>
+    </div>
+    <p class="footer-text">
+      Please ensure the wallet you have connected is holding $HIKARI.<br>
+      All $HIKARI holders will be automatically transferred to Phase 2 very soon.
+    </p>
+  </div>
+
+  <script>
+    const CONTRACT_ADDRESS = "PASTE_CA_HERE";
+
+    function copyCA(event) {
+      navigator.clipboard.writeText(CONTRACT_ADDRESS).then(() => {
+        const button = event.target;
+        button.textContent = "CA COPIED!";
+        setTimeout(() => button.textContent = "Copy CA", 3000);
+      }, () => alert("Failed to copy."));
+    }
+
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    const particles = [];
+    const maxParticles = 100;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createParticle() {
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random() * width,
+        size: 1 + Math.random() * 2
+      };
+    }
+
+    for (let i = 0; i < maxParticles; i++) {
+      particles.push(createParticle());
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'white';
+
+      for (let p of particles) {
+        const k = 128.0 / p.z;
+        const x = (p.x - width / 2) * k + width / 2;
+        const y = (p.y - height / 2) * k + height / 2;
+        const size = p.size * k;
+
+        if (x >= 0 && x <= width && y >= 0 && y <= height) {
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        p.z -= 2;
+        if (p.z <= 0) Object.assign(p, createParticle(), { z: width });
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    const globalCanvas = document.getElementById("globalParticles");
+    const globalCtx = globalCanvas.getContext("2d");
+    let globalParticles = [];
+
+    function resizeGlobal() {
+      globalCanvas.width = window.innerWidth;
+      globalCanvas.height = window.innerHeight;
+    }
+    resizeGlobal();
+    window.addEventListener('resize', resizeGlobal);
+
+    document.addEventListener("mousemove", e => {
+      for (let i = 0; i < 3; i++) {
+        globalParticles.push({
+          x: e.clientX,
+          y: e.clientY,
+          alpha: 1,
+          radius: Math.random() * 2,
+          vx: (Math.random() - 0.5) * 1,
+          vy: (Math.random() - 0.5) * 1,
+        });
+      }
+    });
+
+    function drawGlobalParticles() {
+      globalCtx.clearRect(0, 0, globalCanvas.width, globalCanvas.height);
+      globalParticles = globalParticles.filter(p => p.alpha > 0.05);
+
+      for (let p of globalParticles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha *= 0.95;
+
+        globalCtx.beginPath();
+        globalCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        globalCtx.fillStyle = `rgba(192, 192, 192, ${p.alpha})`;
+        globalCtx.fill();
+      }
+
+      requestAnimationFrame(drawGlobalParticles);
+    }
+
+    drawGlobalParticles();
+
+    document.querySelectorAll(".button").forEach(button => {
+      button.addEventListener("mouseenter", () => {
+        button.style.boxShadow = "0 0 20px rgba(192,192,192,0.6)";
+      });
+      button.addEventListener("mouseleave", () => {
+        button.style.boxShadow = "none";
+      });
+    });
+
+    const connectBtn = document.getElementById('connect-wallet');
+    connectBtn.addEventListener('click', async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const response = await window.solana.connect();
+          const address = response.publicKey.toString();
+          connectBtn.innerText = `${address.slice(0, 4)}...${address.slice(-4)}`;
+        } catch (err) {
+          console.error("Connection cancelled or failed", err);
+        }
+      } else {
+        alert("Phantom Wallet not found. Please install it.");
+        window.open("https://phantom.app/", "_blank");
+      }
+    });
+
+    
+    
+  </script>
+<!-- Custom Chatbase Button Config -->
+<script>
+  window.chatbaseConfig = {
+    chatbotId: "MiJlvfcu3TySZK6iapGYU",  // Use your real bot ID
+    autoPopup: false,                    // Don't open on load
+    injectTo: "#hikari-chat-button",     // Attach to your custom button
+    hideDefaultLauncher: true            // This disables the floating default button
+  };
+</script>
+
+<script
+  src="https://www.chatbase.co/embed.min.js"
+  defer>
+  
+</script>
+
+
+</button>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const interval = setInterval(() => {
+      const chatbotImg = document.querySelector('img[src*="chat-icons/04cac0bc"]');
+      
+      if (chatbotImg && !chatbotImg.parentElement.classList.contains('chatbot-ring')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'chatbot-ring';
+
+        chatbotImg.style.width = '70px';
+        chatbotImg.style.height = '70px';
+        
+        const parent = chatbotImg.parentElement;
+        parent.insertBefore(wrapper, chatbotImg);
+        wrapper.appendChild(chatbotImg);
+
+        clearInterval(interval);
+      }
+    }, 500);
+  });
+</script>
+
+
+</body>
+</html>
+
       margin: 0;
       padding: 0;
       font-family: 'Blinker', sans-serif;
