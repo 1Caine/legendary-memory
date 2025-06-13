@@ -180,6 +180,35 @@
   pointer-events: none; /* 🔒 Prevent interaction */
 }
 
+/* Hide image by default (desktop) */
+.mobile-bg {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Video by default is shown on desktop */
+.desktop-bg {
+  display: block;
+}
+
+/* On small screens, hide video and show image */
+@media (max-width: 768px) {
+  .desktop-bg {
+    display: none;
+  }
+
+  .mobile-bg {
+    display: block;
+  }
+}
+
+
 
 </style>
 
@@ -187,10 +216,15 @@
 </head>
 <body>
 
-    <video autoplay muted loop playsinline id="bg-video" tabindex="-1" aria-hidden="true">
-    <source src="superagent.mp4" type="video/mp4" />
-    Your browser does not support HTML5 video.
-  </video>
+    <!-- Video for desktop -->
+<video autoplay muted loop playsinline id="bg-video" class="desktop-bg">
+  <source src="superagent.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video>
+
+<!-- Static image for mobile -->
+<img src="SuperAgent-BG.jpg" alt="Mobile Background" class="mobile-bg" />
+
 
   <!-- Main content -->
   <div class="content">
@@ -226,16 +260,20 @@
 
   <script>
   function copyCA() {
-    const ca = "0xYourContractAddressHere";
-    const button = document.getElementById('copy-btn');
+  const ca = "CA copied!"; // Replace with your real CA
+  const button = document.getElementById('copy-btn');
 
-    navigator.clipboard.writeText(ca).then(() => {
-      button.textContent = "CA Copied!";
-      setTimeout(() => {
-        button.textContent = "Copy CA";
-      }, 2000);
-    });
-  }
+  navigator.clipboard.writeText(ca).then(() => {
+    button.textContent = "CA Copied!";
+    setTimeout(() => {
+      button.textContent = "Copy CA";
+    }, 2000);
+  }).catch(err => {
+    console.error("Failed to copy:", err);
+    alert("Could not copy. Please try again.");
+  });
+}
+
 
   function joinWaitlist() {
     const popup = document.getElementById('email-popup');
