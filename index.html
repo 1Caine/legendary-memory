@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,14 +14,25 @@
     html, body {
       height: 100%;
       font-family: 'Press Start 2P', cursive;
+      overflow: hidden;
     }
 
     body {
-      background-image: url('./SuperAgent-BG.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      pointer-events: none;
     }
 
     .content {
@@ -33,12 +42,14 @@
       justify-content: center;
       color: white;
       text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-      text-align: center;
-      padding: 1rem;
     }
 
     .content h1 {
       font-size: 3rem;
+      text-align: center;
+    }
+
+    .btn, .content h1 {
       font-family: 'Press Start 2P', cursive;
     }
 
@@ -50,7 +61,6 @@
       justify-content: space-evenly;
       padding: 0 20%;
       pointer-events: none;
-      flex-wrap: nowrap;
     }
 
     .btn {
@@ -63,7 +73,6 @@
       cursor: pointer;
       transition: background-color 0.3s;
       pointer-events: all;
-      font-family: 'Press Start 2P', cursive;
     }
 
     .btn:hover {
@@ -126,7 +135,7 @@
     .toast {
       visibility: hidden;
       min-width: 280px;
-      background-color: rgba(0, 0, 0, 0.85);
+      background-color: rgba(0,0,0,0.85);
       color: #fff;
       text-align: center;
       border-radius: 8px;
@@ -149,38 +158,13 @@
       pointer-events: auto;
     }
 
-    #bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .mobile-bg {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      object-position: center;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* MEDIA QUERIES */
     @media (max-width: 768px) {
-      .desktop-bg {
+      #bg-video {
         display: none;
       }
 
-      .mobile-bg {
-        display: block;
+      body {
+        background-image: url('./SuperAgent-BG.jpg');
       }
 
       .content h1 {
@@ -189,34 +173,22 @@
       }
 
       .button-container {
-        padding: 0 5%;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-      }
-
-      .btn {
-        font-size: 0.75rem;
-        padding: 8px 12px;
+        padding: 0 10%;
       }
     }
   </style>
 </head>
-
 <body>
 
-  <!-- Video for desktop -->
-  <video autoplay muted loop playsinline id="bg-video" class="desktop-bg">
+  <!-- Background video for desktop -->
+  <video autoplay muted loop playsinline id="bg-video">
     <source src="superagent.mp4" type="video/mp4" />
     Your browser does not support HTML5 video.
   </video>
 
-  <!-- Static image for mobile -->
-  <img src="SuperAgent-BG.jpg" alt="Mobile Background" class="mobile-bg" />
-
-  <!-- Main content -->
-  <div class="content">
-  </div>
+  <!-- Content blocks -->
+  <div class="content"><h1></h1></div>
+  <div class="content"><h1></h1></div>
 
   <!-- Buttons -->
   <div class="button-container">
@@ -225,7 +197,7 @@
     <button class="btn" onclick="window.open('https://github.com/superagent-ai/superagent', '_blank')">GitHub Repo</button>
   </div>
 
-  <!-- Email form popup -->
+  <!-- Email popup -->
   <div class="email-popup" id="email-popup">
     <form id="email-form" onsubmit="submitEmail(event)">
       <label for="email">Enter your email:</label>
@@ -239,7 +211,7 @@
 
   <script>
     function copyCA() {
-      const ca = "CA copied!"; // Replace with your real CA
+      const ca = "CA copied!";
       const button = document.getElementById('copy-btn');
 
       navigator.clipboard.writeText(ca).then(() => {
@@ -262,7 +234,6 @@
     function showToast() {
       const toast = document.getElementById('toast');
       toast.classList.add('show');
-
       setTimeout(() => {
         toast.classList.remove('show');
       }, 4000);
@@ -281,7 +252,6 @@
         emailInput.value = '';
         button.textContent = "Joined!";
         showToast();
-
         setTimeout(() => {
           button.textContent = "Join Waitlist";
         }, 3000);
