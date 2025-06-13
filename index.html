@@ -141,24 +141,30 @@
     }
 
     @media (max-width: 768px) {
-      #bg-video {
-        display: none;
-      }
+  #bg-video {
+    display: none;
+  }
 
-      body {
-        background-image: url('./SuperAgent-BG-mobile.jpg'); /* Updated mobile image */
-        min-height: 100vh;
-      }
+  body {
+    background-image: url('./SuperAgent-BG.jpg');
+    background-color: black; /* Add this line */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
 
-      .content h1 {
-        font-size: 1.3rem;
-        padding: 0 1rem;
-      }
+  .content h1 {
+    font-size: 1.3rem;
+    padding: 0 1rem;
+  }
 
-      .button-container {
-        padding: 0 10%;
-      }
-    }
+  .button-container {
+    padding: 0 10%;
+  }
+}
+
   </style>
 </head>
 <body>
